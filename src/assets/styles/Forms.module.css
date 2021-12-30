@@ -1,0 +1,49 @@
+.center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.logo{
+    width: 50%;
+    margin: auto;
+}
+   
+
+form{
+    border: 3px solid #009E0F;
+    border-radius: 5px;
+    padding: 20px 40px;
+    font-weight: bold;
+    /* width: 80%; */
+}
+
+
+form div:nth-child(odd) input{
+    border: 3px solid #2B78E4;
+    
+}
+form div:nth-child(even) input{
+    border: 3px solid #CF2A27;
+}
+
+
+form input{
+    max-width: 80%;
+    margin: auto;
+}
+
+form div{
+    margin-bottom: 20px;
+}
+
+.button_form{
+    border: 3px solid black;
+    background-color: #B45F06;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin: 20px 20px 0px;
+}
