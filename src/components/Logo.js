@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function Logo(){
     return (
         <div className='my-4'>
-            <Link to='/'><img src={logo} alt="Linking" className={styles.logo}/></Link>
+            <Link to='/'><img src={logo} alt="Linking" className= {styles.logo}/></Link>
         </div>
     );
 }

@@ -8,7 +8,8 @@ services:
       - './:/linking_wa'
       - '/linking_wa/node_modules'
     ports:
-      - 3000:3000
+      - ${PORT}:${PORT}
+    env_file: .env
     environment:
       - CHOKIDAR_USEPOLLING=true
       - FAST_REFRESH=false

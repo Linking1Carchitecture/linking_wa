@@ -1,25 +1,26 @@
-.center{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+.logo{
+    width: 20vw;
+    min-width: 200px;
+    margin: auto;
+    transition: transform .2s;
 }
 
-.logo{
-    width: 50%;
-    margin: auto;
+.logo:hover{
+    transform: scale(1.1)
 }
    
 
 form{
     border: 3px solid #009E0F;
     border-radius: 5px;
-    padding: 20px 40px;
-    font-weight: bold;
-    /* width: 80%; */
+    padding: 20px 20px;
+    width: 500px;
+    margin: 40px auto 40px;   
 }
 
+form label{
+    font-weight: bold;
+}
 
 form div:nth-child(odd) input{
     border: 3px solid #2B78E4;
@@ -31,8 +32,12 @@ form div:nth-child(even) input{
 
 
 form input{
-    max-width: 80%;
+    width: 80% !important;
     margin: auto;
+}
+
+form input::-webkit-input-placeholder{
+    color: red !important;
 }
 
 form div{
@@ -41,9 +46,41 @@ form div{
 
 .button_form{
     border: 3px solid black;
-    background-color: #B45F06;
+    background-color: #B45F06;    
     color: white;
     font-weight: bold;
     padding: 5px 10px;
     margin: 20px 20px 0px;
+    box-shadow: black 3px 3px;
+    transition: transform .2s;
+}
+
+.button_form:last-child{
+    color: black;
+    border: white;
+    background-color: white;
+    font-weight: normal;
+}
+
+.button_form:hover:enabled{
+    transform: scale(1.1);   
+}
+
+.warningIcon{
+    position: relative;
+    float: right;
+    top: -35px;
+    left: -20px;
+}
+
+strong div{
+    display: block;
+    font-size: medium;
+    margin-bottom: -5px;
+}
+
+@media screen and  (max-width: 576px){
+    form{
+        width: 85vw;
+    }
 }

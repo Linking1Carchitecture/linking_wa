@@ -1,22 +1,18 @@
-import forms from '../assets/styles/Forms.module.css';
-// import landing from '../assets/styles/Landing.module.css';
-
-import { Link } from 'react-router-dom';
-import Logo from '../components/Logo';
+import NavBar from '../components/NavBar';
+import styles from '../assets/styles/Landing.module.css';
 
 function Landing(props){
 
     return (
-        <div >
-            <div className={forms.logo}>
-                <Logo />
+        <div>
+            <NavBar username={null} />
+            <div className={`text-center ${styles.content}`}>
+                <h1>Video-reuniones libres para toda la comunidad.</h1>
+                <button>Crear reunion</button>
             </div>
-            <div className="text-center">
-                <h1>HOLA {props.username}</h1>
-            </div>
-            <div className='text-center'>
-                <Link to='/login'><button className={forms.button_form}>Ingresar</button></Link>
-                <Link to='/register'><button className={forms.button_form}>Registrarse</button></Link>
+            <div className={`text-center input-group ${styles.joinInput}`}>
+                <input type='text' id='meetingID' placeholder='Id reunion' className={`form-control mb-0`}/>
+                <button className={`btn ${styles.joinBtn}`}>Unirse</button>
             </div>
         </div>
     );
