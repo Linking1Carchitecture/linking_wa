@@ -1,30 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { RiErrorWarningLine } from 'react-icons/ri'
 import forms from '../assets/styles/Forms.module.css';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
+
+import { userProfile } from '../pages/Landing';
 
 import config from '../config.json'
 
-
 function Login(){
+
+    let navigate = useNavigate();
+    const [, setUserToken] = useState();
 
     const [formValue, setformValue] = React.useState({
         email: '',
         password: '',
-    });
+    });    
 
     const handleChange = (event) => {
         setformValue({...formValue,[event.target.name]: event.target.value});
-        event.preventDefault();
         validateForm();
     }
 
     const handleSubmit = async(event) => {
-        // console.log(formValue)
+        event.preventDefault();
         if(!validateForm()){
           document.getElementById('formHelp').innerHTML = "<div class='mt-4 mb-1'>Revisa todos los campos</div>"
           return false
@@ -56,11 +59,13 @@ function Login(){
 
           if(response != null){
             alert("You are in!!!")
+            setUserToken(response.signin.authtoken)
+            localStorage.setItem('userToken', response.signin.authtoken)
+            navigate('/')  
+              
+            
           }else{
             document.getElementById('formHelp').innerHTML = "<div class='mt-4'>Credenciales erróneas</div> <div>o</div> <div class='mb-3'>No has confirmado tu cuenta</div>"
-            // Array.from(document.getElementById('formHelp').children).forEach((e)=>{
-            //     e.classList.add()
-            // })
           }
           console.log(JSON.stringify(response))
           // console.log("Code: ",responseCode)
@@ -104,6 +109,13 @@ function Login(){
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           );
     };
+    useEffect(() => {
+      if(localStorage.getItem("userToken")){
+        userProfile(localStorage.getItem("userToken")).then(
+          navigate("/")  
+        )
+      }
+    },[navigate]);
     
     return (
         // <div className={`w-100 row ${forms.center}`}>
@@ -114,7 +126,7 @@ function Login(){
             </div>
             {/* <div className='col-6 mt-4'> */}
             <div>
-                <form className='text-center'>
+                <form className='text-center' onSubmit={handleSubmit}>
                     <div className='text-center'>
                         <label htmlFor="email">Correo</label>
                         <input className='form-control' type="email" name="email" id="email" onChange={handleChange}/>
@@ -128,7 +140,7 @@ function Login(){
                     </div>
                     <div className='text-center'>
                         <strong id="formHelp" className="form-text text-danger"></strong>
-                        <button type='button' className={forms.button_form} onClick={handleSubmit}>Ingresar</button>
+                        <button type='submit' className={forms.button_form}>Ingresar</button>
                         <Link to='/register'><button className={forms.button_form}>No tengo cuenta</button></Link>
                     </div>
                 </form>

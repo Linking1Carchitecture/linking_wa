@@ -19,6 +19,13 @@
     transition: transform .2s;
 }
 
+/* .button_form:last-child{
+    color: black;
+    border: white;
+    background-color: white;
+    font-weight: normal;
+} */
+
 .button_form:hover{
     transform: scale(1.1);   
 }
@@ -61,14 +68,170 @@
     border: 2px solid black;
     border-left: none;
     font-weight: 600;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .joinBtn:hover{
     color: white;
     background-color: #B45F06;
-    border-radius: 0px;
 }
 
 .joinBtn:focus{
     box-shadow: none;
+}
+
+.userIcon{
+    color: #3DB4E8;
+    font-size: 50px;
+    padding: 0px;
+    max-width:100%;
+    max-height:100%;
+    transition: transform .2s;
+}
+
+.userIcon img{
+    width:100%;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid gray;
+}
+
+.userDetail{
+    
+    float: left;
+    position: relative;
+    top: 100px;
+    left: 80px;
+    margin-right: 0px;
+    font-size: small;
+    border: 3px solid black;
+    padding: 5px 8px;
+    border-radius: 5px;
+    background-color: gray;
+
+}
+
+.userDetail div{
+    padding: 0px;
+    margin: -5px 0px;
+}
+
+.userIcon:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+    color: #3DB4E8;
+}
+
+.userIcon:focus{
+    box-shadow: none;
+}
+
+.greeting{
+    /* float: left; */
+    display: inline;
+    position: relative;
+    margin-right: 20px;
+    font-size: 20pt;
+    font-weight: 500;
+    top: 10px;
+}
+
+.modal{
+    position: relative;
+    z-index: -1;
+}
+.background{
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    opacity: 0.5;
+}
+
+.settings{
+    width: 70vw;
+    height: 70vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: auto;
+}
+
+.closeButton{
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 25px;
+    color: gray;
+    transition: transform .2s;
+}
+
+.closeButton:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.tabButton{
+    flex-direction: column;
+}
+
+.tabs, .tabs.active{
+    margin: 0px 0px;
+    padding: 15px 15px;
+    border: 1px solid rgb(200,201,202);
+    border-top: none;
+    border-left: none;
+    background-color: transparent;
+}
+
+.tabs:hover{
+    position: relative;
+    left: 10px;
+}
+
+.tabs.active{
+    background-color: rgb(200,201,202);
+    font-weight: bold;
+}
+
+.tabContent{
+    min-width: 70%;
+}
+
+.tab-content .select label{
+    font-weight: bold;
+}
+
+.myVideo{
+    width: 200px;
+}
+
+.imagePreview img{
+    margin-top: 20px;
+    height: 200px;
+    width: auto;
+    max-width: 90%;
+}
+
+@media screen and  (max-width: 576px){
+    .settings{
+        width: 85vw;
+    }
+
+    .tabButton{
+        margin-left: auto;
+        margin-right: auto;
+        flex-direction: row;
+        margin-bottom: 20px;
+    }
+
+    .tabs:hover{
+        position: relative;
+        bottom: 10px;
+        left: 0px;
+    }
 }

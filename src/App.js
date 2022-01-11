@@ -7,7 +7,6 @@ import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 
-
 function App() {
   
   return (
