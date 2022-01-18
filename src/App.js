@@ -15,6 +15,7 @@ function App() {
         {/* <MainNavigation /> */}
         <Routes>
           <Route path='/' element={<Landing />} />
+          <Route path='/:meetingID' element={<Landing />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='*' element={<Navigate replace to="/"/>} />

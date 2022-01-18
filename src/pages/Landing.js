@@ -2,19 +2,24 @@ import NavBar from '../components/NavBar';
 import styles from '../assets/styles/Landing.module.css';
 
 import axios from 'axios';
-
 import config from '../config.json'
+
 import { useEffect, useState } from 'react';
 import Settings, { getImage } from '../components/Settings';
 import useModal from '../utils/useModal';
+import { useParams } from 'react-router-dom';
+import Welcome from '../components/Welcome';
+import Meeting from '../components/Meeting';
 
 function Landing(){
     
+    const { meetingID } = useParams()
     const {toggle, visible} = useModal();
     const [userToken, setUserToken] = useState()
     const [userData, setUserData] = useState({
         username: null, email: null, image: null
     })
+
     const [userImage, setUserImage] = useState();
 
     const showModal = () => {
@@ -27,6 +32,7 @@ function Landing(){
     };
 
     useEffect(() => {
+        
         const token = localStorage.getItem("userToken");
         if (token) {
           setUserToken(token);
@@ -50,8 +56,10 @@ function Landing(){
                         
                         setUserData({...userData, ...response.profile})
                         // console.log("user: ", response.profile)
+                        return response.profile
                     }else{
                         alert("ERROR getting user data :(")
+                        localStorage.removeItem("userToken")
                     }
                     // console.log(JSON.stringify(response))
                     // console.log("Code: ",responseCode)
@@ -64,21 +72,18 @@ function Landing(){
         if(!userData.username){
             loggedUser();
         }
+        sendDataToParent();
         
     }, [userToken,userData]);
     
     return (
         <div>
-            <NavBar user={userData} sendImage={sendDataToParent} showModal={showModal} />
-            {/* <NavBar user={userData} /> */}
-            <div className={`text-center ${styles.content}`}>
-                <h1>Video-reuniones libres para toda la comunidad.</h1>
-                <button>Crear reunion</button>
-            </div>
-            <div className={`text-center input-group ${styles.joinInput}`}>
-                <input type='text' id='meetingID' placeholder='Id reunion' className={`form-control mb-0`}/>
-                <button className={`${styles.joinBtn}`}>Unirse</button>
-            </div>
+            {meetingID ? <Meeting data={meetingID} /> 
+                        : <div>
+                            <NavBar user={userData} sendImage={sendDataToParent} showModal={showModal} />
+                            <Welcome token={userToken}/>
+                          </div> 
+            }
             <Settings visible={visible} toggle={toggle} showModal={showModal} user={userData} userImage={userImage} className={styles.modal}/>
         </div>
     );
@@ -86,7 +91,7 @@ function Landing(){
 export default Landing;
 
 async function userProfile(token){
-
+    console.log("Getting user profile: ", token)
     const query = `query ($token: Usertoken!){
         profile(token: $token){
         username

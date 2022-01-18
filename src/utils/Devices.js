@@ -12,13 +12,14 @@ let audioInputSelect = document.querySelector('select#audioSource');
 let audioOutputSelect = document.querySelector('select#audioOutput');
 let videoSelect = document.querySelector('select#videoSource');
 let selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+let outputDevice;
 
 if(audioOutputSelect)  audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 
 export function gotDevices(deviceInfos) {
   // Handles being called several times to update labels. Preserve values.
-  console.log("selectors: ", selectors)
-  console.log("deviceInfos: ", deviceInfos)
+  // console.log("selectors: ", selectors)
+  // console.log("deviceInfos: ", deviceInfos)
   const values = selectors.map(select => select.value);
   selectors.forEach(select => {
     while (select.firstChild) {
@@ -65,6 +66,7 @@ export function attachSinkId(element, sinkId) {
       element.setSinkId(sinkId)
           .then(() => {
             console.log(`Success, audio output device attached: ${sinkId}`);
+            outputDevice = sinkId;
           })
           .catch(error => {
             let errorMessage = error;
@@ -75,6 +77,7 @@ export function attachSinkId(element, sinkId) {
             // Jump back to first output device in the list as it's the default.
             audioOutputSelect.selectedIndex = 0;
           });
+          return sinkId;
     } else {
       console.warn('Browser does not support output device selection.');
     }
@@ -85,8 +88,8 @@ export function changeAudioDestination() {
   const audioDestination = audioOutputSelect.value;
   videoElement = document.querySelector('#myVideo');
   audioElement = document.querySelector('#audioTest');
-  attachSinkId(videoElement, audioDestination);
-  attachSinkId(audioElement, audioDestination);
+  if(videoElement) attachSinkId(videoElement, audioDestination);
+  if(audioElement) attachSinkId(audioElement, audioDestination);
 }
 
 export function gotStream(stream) {
@@ -125,7 +128,7 @@ export async function start() {
 
   if(audioOutputSelect)  audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 
-    if(videoSelect){
+  if(videoSelect){
     videoSource = videoSelect.value;
     selectors = [videoSelect];
     console.log("Video :)")
@@ -133,9 +136,38 @@ export async function start() {
   }
   
   console.log("constraints", constraints)
-  if(audioInputSelect) audioInputSelect.onchange = start;
-  if(audioOutputSelect) audioOutputSelect.onchange = changeAudioDestination;
-  if(videoSelect) videoSelect.onchange = start;
+  if(audioInputSelect){
+    // audioInputSelect.onchange = start;
+    audioInputSelect.addEventListener(
+      'change',
+      function() { start().then((result)=>{
+        sessionStorage.setItem('settings', JSON.stringify(result))
+      })},
+      false
+   );
+  }
+  if(audioOutputSelect){
+    // audioInputSelect.onchange = start;
+    audioOutputSelect.addEventListener(
+      'change',
+      function() { changeAudioDestination(); start().then((result)=>{
+        sessionStorage.setItem('settings', JSON.stringify(result))
+      })},
+      false
+   );
+  }
+  if(videoSelect){
+    // audioInputSelect.onchange = start;
+    videoSelect.addEventListener(
+      'change',
+      function() { start().then((result)=>{
+        sessionStorage.setItem('settings', JSON.stringify(result))
+      })},
+      false
+   );
+  }
 
   await navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
+
+  return [constraints, outputDevice];
 }

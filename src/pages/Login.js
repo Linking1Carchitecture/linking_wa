@@ -26,54 +26,39 @@ function Login(){
         validateForm();
     }
 
-    const handleSubmit = async(event) => {
-        event.preventDefault();
-        if(!validateForm()){
-          document.getElementById('formHelp').innerHTML = "<div class='mt-4 mb-1'>Revisa todos los campos</div>"
-          return false
+    const handleSubmit = async(event) =>{
+      event.preventDefault();
+      if(!validateForm()){
+        document.getElementById('formHelp').innerHTML = "<div class='mt-4 mb-1'>Revisa todos los campos</div>"
+        return false
+      }
+      login(formValue).then((result) => {
+        const response = result.data.data
+        const errors = result.data.errors
+        if(errors){
+          errors.forEach((error) => {
+            alert("ERROR!")
+            console.log(error)
+          })
         }
     
-        const query = `mutation ($user: LoginInput!){
-          signin(user: $user){
-            authtoken
-          }
-        }`;
-    
-        const variables = JSON.stringify({
-          user: {email: formValue.email, password: formValue.password}
-        })
-    
-        await axios.post(config.apiURL, {
-          query,
-          variables
-        }, { headers: { 'Content-Type': 'application/json'}
-        }).then((result) => {
-          const response = result.data.data
-          const errors = result.data.errors
-          if(errors){
-            errors.forEach((error) => {
-              alert("ERROR!")
-              console.log(error)
-            })
-          }
-
-          if(response != null){
-            alert("You are in!!!")
-            setUserToken(response.signin.authtoken)
-            localStorage.setItem('userToken', response.signin.authtoken)
-            navigate('/')  
-              
+        if(response != null){
+          alert("Welcome!!!")
+          setUserToken(response.signin.authtoken)
+          localStorage.setItem('userToken', response.signin.authtoken)
+          navigate('/')  
             
-          }else{
-            document.getElementById('formHelp').innerHTML = "<div class='mt-4'>Credenciales erróneas</div> <div>o</div> <div class='mb-3'>No has confirmado tu cuenta</div>"
-          }
-          console.log(JSON.stringify(response))
-          // console.log("Code: ",responseCode)
-        }).catch((error) => {
-          alert("ERROR!!!")
-          console.log(error)
-          console.log(query)
-        });
+          
+        }else{
+          document.getElementById('formHelp').innerHTML = "<div class='mt-4'>Credenciales erróneas</div> <div>o</div> <div class='mb-3'>No has confirmado tu cuenta</div>"
+        }
+        console.log(JSON.stringify(response))
+        // console.log("Code: ",responseCode)
+      }).catch((error) => {
+        alert("ERROR!!!")
+        console.log(error)
+      });
+
     }
 
     function validateForm(){
@@ -149,3 +134,22 @@ function Login(){
     );
 }
 export default Login;
+
+export async function login(fields){
+  // console.log("LOGIN!")
+  const query = `mutation ($user: LoginInput!){
+    signin(user: $user){
+      authtoken
+    }
+  }`;
+
+  const variables = JSON.stringify({
+    user: {email: fields.email, password: fields.password}
+  })
+  console.log("LOGIN: ", variables)
+  return await axios.post(config.apiURL, {
+    query,
+    variables
+  }, { headers: { 'Content-Type': 'application/json'}
+  })
+}

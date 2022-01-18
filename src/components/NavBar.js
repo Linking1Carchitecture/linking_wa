@@ -47,7 +47,7 @@ function NavBar(props){
     let user = props.user;
     
     
-    console.log(user)
+    // console.log(user)
 
     if(user.username){ 
         options = 

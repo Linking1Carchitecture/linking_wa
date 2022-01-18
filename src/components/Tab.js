@@ -6,32 +6,49 @@ import { start } from '../utils/Devices';
 
 export default function Tab(props){   
     
+    // const [settings, setSettings] = useState({
+    //     config_id: null, user_email: null, in_video: null,
+    //     background_id: null, in_audio: null, out_audio: null
+    // })
+
     useEffect(() => {
-        start()
-    }, []);
+         start().then(() => {
+        //     let audioInputSelect = document.querySelector('select#audioSource');
+        //     let audioOutputSelect = document.querySelector('select#audioOutput');
+        //     let videoSelect = document.querySelector('select#videoSource');
+        //     // if(audioInputSelect) audioInputSelect.value = props
+        //     console.log("HOLA ", props.userSettings.in_audio)
+        //     GetDevice(props.userSettings.in_audio)
+        });
+        // console.log("HOLA ", props.userSettings)
+        // GetDevice(props.userSettings.in_video)
+    
+    }, [props]);
 
+    
     if(props.tab === "audio"){
-
+        
         return(
-            <div>
+            <div >
                 <div className="select">
-                    <label htmlFor="audioSource">Microfono: </label><select id="audioSource"></select>
+                    <label htmlFor="audioSource">Microfono: </label><select id="audioSource" style={{maxWidth:'95%', marginLeft: '10px'}}></select>
                 </div>
-                <button onClick={recordAudio}>Grabar</button>
-                <div className="select">
-                    <label htmlFor="audioOutput">Altavoces: </label><select id="audioOutput"></select>
+                {/* <button onClick={recordAudio}>Grabar</button> */}
+                <div className="select" style={{marginTop:'20px'}}>
+                    <label htmlFor="audioOutput">Altavoces: </label><select id="audioOutput" style={{maxWidth:'95%', marginLeft: '10px'}}></select>
+                    <audio id="audioTest"></audio>
                 </div>
                 {/* <button onClick={audio}>Escuchar</button> */}
-                <audio id="audioTest" controls></audio>
+                
             </div>
         );
     }else{
         return(
             <div>
                 <div className="select">
-                    <label htmlFor="videoSource">Camara: </label><select id="videoSource"></select>
+                    <label htmlFor="videoSource">Camara: </label><select id="videoSource" style={{maxWidth:'95%', marginLeft: '10px'}}></select>
                 </div>
-                <video id="myVideo" className={styles.myVideo} playsInline autoPlay></video>
+                <video id="myVideo" style={{marginTop: '10px'}} className={styles.myVideo} playsInline autoPlay></video>
             </div>
         );
     }
@@ -80,3 +97,19 @@ export async function recordAudio(){
 export async function playAudio(audio){
     audio.play();
 }
+
+export function GetDevice(id, ki){
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      devices.forEach(function(device) {
+  
+        if(device.deviceId === id){
+            console.log(device.kind + ": " + device.label !== undefined ? device.label : 'Default');
+        }
+      });
+    })
+    .catch(function(err) {
+      console.log(err.name + ": " + err.message);
+    });
+  }
+
