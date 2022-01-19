@@ -44,9 +44,11 @@ function Settings(props){
         const token = localStorage.getItem("userToken");
         if (token) {
           setUserToken(token);
-          getUserSettings(props.user.email).then((result) => {
-              setUserSettings(result.data.data.userConfig)
+          if(props.user.email){
+            getUserSettings(props.user.email).then((result) => {
+                setUserSettings(result.data.data.userConfig)
             })
+          }
         }
 
         const getCroppedImg = async () => {

@@ -1,16 +1,64 @@
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import config from '../config.json'
 
 function Meeting(props){
     
+    const [meetingData, setMeetingData] = useState({
+        id_llam: null, organization: null, begin_Date: null
+    })
+
+    useEffect(() => {
+        
+        getMeeting(props.data).then((result)=>{
+            if(result.data.data){
+                setMeetingData(result.data.data.creationById)
+            }
+        })
+        
+    }, [props]);
+
     return (
-        <div>This is a meeting with ID: {props.data}</div>
+        <div>
+        { meetingData.id_llam ? 
+            <div>
+                <h1>Welcome to this meeting</h1>
+                <h6>Meeting information</h6>
+                <ul>
+                    <li><strong>ID:</strong> {meetingData.id_llam}</li>
+                    <li><strong>organization: </strong>{meetingData.organization}</li>
+                    <li><strong>begin_Date: </strong>{meetingData.begin_Date}</li>
+                </ul>
+            </div>
+            : <div>
+                <h1>This meeting does not exist :|</h1>
+              </div>
+        }
+        </div>
     );
 }
 export default Meeting;
 
 export async function getMeeting(meetingID){
 
+    const query = `query ($id_llam: String!){
+        creationById(id_llam: $id_llam){
+            id_llam
+            organization
+            begin_Date
+        }
+    }`;
+    
+    const variables = {
+        id_llam: meetingID
+    }
+
+    // console.log(variables)
+    return await axios.post(config.apiURL, {
+        query,
+        variables
+    }, { headers: { 'Content-Type': 'application/json'}
+    })
 }
 
 export async function newMeeting(token){
@@ -32,7 +80,7 @@ export async function newMeeting(token){
         creation: {id_llam: id, organization: "unal", begin_Date: date, token: token}
     }
 
-    // console.log(variables)
+    console.log(variables)
     return await axios.post(config.apiURL, {
         query,
         variables

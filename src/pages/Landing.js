@@ -5,7 +5,7 @@ import axios from 'axios';
 import config from '../config.json'
 
 import { useEffect, useState } from 'react';
-import Settings, { getImage } from '../components/Settings';
+import Settings from '../components/Settings';
 import useModal from '../utils/useModal';
 import { useParams } from 'react-router-dom';
 import Welcome from '../components/Welcome';
@@ -84,7 +84,7 @@ function Landing(){
                             <Welcome token={userToken}/>
                           </div> 
             }
-            <Settings visible={visible} toggle={toggle} showModal={showModal} user={userData} userImage={userImage} className={styles.modal}/>
+            {userData.email && <Settings visible={visible} toggle={toggle} showModal={showModal} user={userData} userImage={userImage} className={styles.modal}/>}
         </div>
     );
 }
