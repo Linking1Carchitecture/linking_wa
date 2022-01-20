@@ -1,22 +1,31 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import config from '../config.json'
 
 function Meeting(props){
     
+    let navigate = useNavigate();
     const [meetingData, setMeetingData] = useState({
         id_llam: null, organization: null, begin_Date: null
     })
 
     useEffect(() => {
+        if(props.user.username){
+            getMeeting(props.data).then((result)=>{
+                if(result.data.data){
+                    setMeetingData(result.data.data.creationById)
+                }
+            })
+        }else{
+            alert("Debes ingresar!")
+            navigate("/login")
+        }   
+    }, [props, navigate]);
+
+    if(!props.user.username){
         
-        getMeeting(props.data).then((result)=>{
-            if(result.data.data){
-                setMeetingData(result.data.data.creationById)
-            }
-        })
-        
-    }, [props]);
+    }
 
     return (
         <div>

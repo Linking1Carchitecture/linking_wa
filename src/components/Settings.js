@@ -46,7 +46,9 @@ function Settings(props){
           setUserToken(token);
           if(props.user.email){
             getUserSettings(props.user.email).then((result) => {
-                setUserSettings(result.data.data.userConfig)
+                if(result.data.data){
+                    setUserSettings(result.data.data.userConfig)
+                }
             })
           }
         }

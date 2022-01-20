@@ -78,7 +78,7 @@ function Landing(){
     
     return (
         <div>
-            {meetingID ? <Meeting data={meetingID} /> 
+            {meetingID ? <Meeting data={meetingID} user={userData}/> 
                         : <div>
                             <NavBar user={userData} sendImage={sendDataToParent} showModal={showModal} />
                             <Welcome token={userToken}/>

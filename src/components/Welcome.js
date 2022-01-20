@@ -13,6 +13,7 @@ function Welcome(props){
             newMeeting(props.token).then((result) => {
                 const meetingData = result.data.data.normal
                 console.log(meetingData)
+                navigate(`/${meetingData.id_llam}`)    
             })
         }else{
             navigate("/login")
